@@ -7,7 +7,6 @@ module.exports = {
     database: 'xsolartech',
     host: '127.0.0.1',
     dialect: 'postgres',
-    operatorsAliases: false,
   },
   test: {
     username: 'sqlite',
@@ -15,7 +14,6 @@ module.exports = {
     database: 'xsolartech_test',
     dialect: 'sqlite',
     storate: './tests/database.sqlite',
-    operatorsAliases: false,
   },
   production: {
     username: process.env.DB_USERNAME,
@@ -23,6 +21,5 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: 'postgres',
-    operatorsAliases: false,
   },
 };

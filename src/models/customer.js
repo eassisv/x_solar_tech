@@ -4,7 +4,12 @@ class Customer extends Model {
   static init(sequelize, DataTypes) {
     super.init(
       {
-        id: { type: DataTypes.INTEGER },
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+          allowNull: false,
+        },
         name: { type: DataTypes.STRING, allowNull: false },
         cpf: { type: DataTypes.STRING, allowNull: false, unique: true },
         phone: { type: DataTypes.STRING, allowNull: false },

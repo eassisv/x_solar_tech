@@ -4,7 +4,12 @@ class Address extends Model {
   static init(sequelize, DataTypes) {
     super.init(
       {
-        id: { type: DataTypes.INTEGER },
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+          allowNull: false,
+        },
         cep: { type: DataTypes.STRING, allowNull: false },
         city: { type: DataTypes.STRING, allowNull: false },
         state: { type: DataTypes.STRING, allowNull: false },

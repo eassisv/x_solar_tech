@@ -13,7 +13,7 @@ module.exports = {
     password: null,
     database: 'xsolartech_test',
     dialect: 'sqlite',
-    storate: './tests/database.sqlite',
+    storage: './tests/database.sqlite',
   },
   production: {
     username: process.env.DB_USERNAME,

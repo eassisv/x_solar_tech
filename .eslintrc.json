@@ -14,6 +14,7 @@
     "ecmaVersion": 11
   },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-plusplus": "off"
   }
 }

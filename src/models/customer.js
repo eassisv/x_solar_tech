@@ -15,12 +15,16 @@ class Customer extends Model {
         phone: { type: DataTypes.STRING, allowNull: false },
         email: { type: DataTypes.STRING, allowNull: false, unique: true },
       },
-      { sequelize, tableName: 'customer' },
+      {
+        sequelize,
+        tableName: 'customer',
+        name: { singular: 'customer', plural: 'customers' },
+      },
     );
   }
 
   static associate({ Address }) {
-    if (Address !== undefined) this.hasMany(Address);
+    this.Addresses = this.hasMany(Address);
   }
 }
 

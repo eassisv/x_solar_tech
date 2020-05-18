@@ -18,7 +18,11 @@ class Address extends Model {
         number: { type: DataTypes.INTEGER, allowNull: false },
         others: { type: DataTypes.STRING },
       },
-      { sequelize, tableName: 'address' },
+      {
+        sequelize,
+        tableName: 'address',
+        name: { singular: 'address', plural: 'addresses' },
+      },
     );
   }
 

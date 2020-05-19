@@ -5,4 +5,16 @@ const digitsOnly = {
   test: (value) => /^[0-9]*$/.test(value),
 };
 
-module.exports = { digitsOnly };
+const noDuplicate = (model, field) => ({
+  name: 'no-duplicate',
+  message: '${path} already registered',
+  test: async (value) => {
+    const result = await model.findOne({
+      where: { [field]: value },
+      attributes: ['id'],
+    });
+    return !result;
+  },
+});
+
+module.exports = { digitsOnly, noDuplicate };

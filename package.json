@@ -7,7 +7,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "pretest": "NODE_ENV=test npx sequelize db:migrate",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "posttest": "NODE_ENV=test npx sequelize db:migrate:undo:all"
   },
   "repository": {
     "type": "git",

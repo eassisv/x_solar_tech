@@ -14,6 +14,7 @@ module.exports = {
     database: 'xsolartech_test',
     dialect: 'sqlite',
     storage: './tests/database.sqlite',
+    logging: false,
   },
   production: {
     username: process.env.DB_USERNAME,

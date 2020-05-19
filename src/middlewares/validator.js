@@ -9,15 +9,17 @@ module.exports = (schema) => async (req, res, next) => {
     req.data = data;
     next();
   } catch (err) {
-    const errors = err.inner.reduce(
-      (acc, error) => ({
-        ...acc,
-        [error.path]: acc[error.path]
-          ? [...acc[error.path], getErrorObj(error)]
-          : [getErrorObj(error)],
-      }),
-      {},
-    );
+    const errors = err.inner
+      ? err.inner.reduce(
+          (acc, error) => ({
+            ...acc,
+            [error.path]: acc[error.path]
+              ? [...acc[error.path], getErrorObj(error)]
+              : [getErrorObj(error)],
+          }),
+          {},
+        )
+      : err;
     res.status(400).json({ errors });
   }
 };

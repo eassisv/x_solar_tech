@@ -14,10 +14,9 @@ const noDuplicate = (model, field, instance) => ({
       where: { [field]: value },
       attributes: ['id', field],
     });
-    console.log('result', result.get(), 'instance', instance.get());
     return !instance
       ? !result
-      : !result || result.get()[field] === instance.get()[field];
+      : !result || result.get(field) === instance.get(field);
   },
 });
 

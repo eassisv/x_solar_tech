@@ -20,6 +20,7 @@ class Address extends Model {
       },
       {
         sequelize,
+        timestamps: false,
         tableName: 'address',
         name: { singular: 'address', plural: 'addresses' },
       },

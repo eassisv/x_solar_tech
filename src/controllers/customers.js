@@ -7,7 +7,10 @@ const normalizeEmail = (email) => {
 
 module.exports = {
   async list(_, res) {
-    const customers = await Customer.findAll();
+    const customers = await Customer.findAll({
+      attributes: { exclude: ['createdAt'] },
+      include: [Customer.Addresses],
+    });
     res.json(customers);
   },
 
@@ -29,5 +32,10 @@ module.exports = {
       await transaction.rollback();
       res.status(500).json();
     }
+  },
+
+  async delete(req, res) {
+    req.instance.destroy();
+    res.json();
   },
 };

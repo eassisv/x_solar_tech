@@ -9,6 +9,12 @@ const router = Router();
 
 router.get('/', customerController.list);
 router.post('/', validator(customerSchema), customerController.store);
+router.put(
+  '/:customerId/',
+  loadInstance(Customer),
+  validator(customerSchema),
+  customerController.update,
+);
 router.delete(
   '/:customerId/',
   loadInstance(Customer),

@@ -1,8 +1,24 @@
-const { Customer, sequelize } = require('../models');
+const { Customer, Address, sequelize } = require('../models');
 
 const normalizeEmail = (email) => {
   const [emailName, domain] = email.split('@');
   return `${emailName}@${domain.toLowerCase()}`;
+};
+
+const performQueriesWithTransaction = async (queries) => {
+  let transaction;
+  try {
+    transaction = await sequelize.transaction();
+    const results = await Promise.all(
+      queries.map((query) => query(transaction)),
+    );
+    await transaction.commit();
+    return results;
+  } catch (err) {
+    console.log(err);
+    await transaction.rollback();
+    return [];
+  }
 };
 
 module.exports = {
@@ -15,23 +31,42 @@ module.exports = {
   },
 
   async store(req, res) {
-    let transaction;
-    const data = {
-      ...req.data,
-      email: normalizeEmail(req.data.email),
-    };
-    try {
-      transaction = await sequelize.transaction();
-      const customer = await Customer.create(data, {
-        include: [Customer.Addresses],
-        transaction,
-      });
-      await transaction.commit();
-      res.status(201).json(customer);
-    } catch (err) {
-      await transaction.rollback();
-      res.status(500).json();
+    const data = { ...req.data, email: normalizeEmail(req.data.email) };
+    const [customer] = await performQueriesWithTransaction([
+      (transaction) =>
+        Customer.create(data, { include: [Customer.Addresses], transaction }),
+    ]);
+    if (customer) return res.status(201).json(customer);
+    return res.status(500).json();
+  },
+
+  async update(req, res) {
+    const { instance, data } = req;
+    const [customer] = await performQueriesWithTransaction([
+      (transaction) =>
+        instance.update(data, {
+          include: [Customer.Addresses],
+          transaction,
+        }),
+      (transaction) =>
+        Address.destroy({
+          where: { customerId: instance.get('id') },
+          transaction,
+        }),
+      (transaction) =>
+        Address.bulkCreate(
+          data.addresses.map((address) => ({
+            ...address,
+            customerId: instance.get('id'),
+          })),
+          { transaction },
+        ),
+    ]);
+
+    if (customer) {
+      return res.json(await customer.reload({ include: [Customer.Addresses] }));
     }
+    return res.status(500).json();
   },
 
   async delete(req, res) {

@@ -5,6 +5,7 @@ module.exports = (schema) => async (req, res, next) => {
     const data = await schema.validate(req.body, {
       abortEarly: false,
       stripUnknown: true,
+      context: { instance: req.instance },
     });
     req.data = data;
     next();

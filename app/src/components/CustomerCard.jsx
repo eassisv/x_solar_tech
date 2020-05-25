@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./CustomerCard.css";
 
 export default function CustomerCard({ customer }) {
   return (
     <div className="card__container">
       <h4 className="card__tittle">{customer.name}</h4>
-      <div className="card__general-info">
+      <div className="card__general-info-wrapper">
         <div className="card__info-item">{customer.cpf}</div>
         <div className="card__info-item">{customer.email}</div>
         <div className="card__info-item">{customer.phone}</div>

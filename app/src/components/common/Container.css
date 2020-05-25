@@ -7,8 +7,9 @@
 
 @media all and (max-width: 540px) {
   .container {
-    width: 100%;
-    margin-left: 10px;
-    margin-right: 10px;
+    position: relative;
+    box-sizing: border-box;
+    width: 95%;
+    margin: 0 auto;
   }
 }

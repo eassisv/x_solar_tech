@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Button.css";
+import "../../styles/Button.css";
 
 export default function Button({ children, variant, onClick }) {
   const className = `button ${variant}`;

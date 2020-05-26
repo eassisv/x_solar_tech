@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CustomerCard from "./CustomerCard";
-import { createFakeCustomerList } from "../mock";
+import createFakeCustomerList from "../mock";
 
 export default function CustomerList() {
   const [customerList, setCustomerList] = useState([]);

@@ -22,6 +22,6 @@
 .search-bar__input:focus {
   outline: none;
   width: 100%;
-  border: 1px solid #28cacf;
-  box-shadow: 0 1px 2px #14686b44, 0 2px 4px #1e959944;
+  border: 1px solid #457b9d;
+  box-shadow: 0 1px 2px #26435644, 0 2px 4px #355f7a44;
 }

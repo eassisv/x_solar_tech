@@ -1,0 +1,46 @@
+.card__collapse-button {
+  width: 100%;
+  display: block;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.2rem 0 0.475rem;
+  margin-top: 0.2rem;
+  background-color: transparent;
+  border: none;
+  border-top: 1px solid #fff;
+}
+
+.card__collapse-button:focus {
+  outline: none;
+}
+
+.card__collapse-button-icon {
+  display: inline-block;
+  border: none;
+  border-style: solid;
+  border-color: #494949;
+  border-width: 0 0.2rem 0.2rem 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin: 2px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.card__collapse-button:active .card__collapse-button-icon {
+  -webkit-transform: rotate(45deg) scale(1.1, 1.1);
+  -moz-transform: rotate(45deg) scale(1.1, 1.1);
+  transform: rotate(45deg) scale(1.1, 1.1);
+}
+
+.card__collapse-button-icon.closed {
+  -webkit-transform: rotate(-135deg) scale(1.1, 1.1);
+  -moz-transform: rotate(-135deg) scale(1.1, 1.1);
+  transform: rotate(-135deg) scale(1.1, 1.1);
+  transition: all 0.1s ease;
+}

@@ -6,3 +6,7 @@ body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
+
+button::-moz-focus-inner {
+  border: 0;
+}

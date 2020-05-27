@@ -16,8 +16,8 @@
 }
 
 .card__container:hover {
-  transition: transform 0.4s ease;
-  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  transform: translateY(-1px);
 }
 
 .card__tittle {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import CardCustomerGeneralInfo from "./CardCustomerGeneralInfo";
 import CardAddressInfo from "./CardAddressInfo";
@@ -6,9 +6,6 @@ import CardCollapseContainer from "./CardCollapseContainer";
 import "../styles/CustomerCard.css";
 
 export default function CustomerCard({ customer }) {
-  const [closed, setClosed] = useState(true);
-  const collapseClass = useMemo(() => (closed ? " closed" : ""), [closed]);
-
   return (
     <div className="card__container">
       <h4 className="card__tittle">{customer.name}</h4>

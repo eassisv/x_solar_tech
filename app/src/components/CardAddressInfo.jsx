@@ -1,21 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "../styles/CardAddressInfo.css";
 
 const cepRegex = /^([0-9]{5})([0-9]{3})$/;
 
 export default function CardAddressInfo({ addresses }) {
   return (
-    <fieldset>
-      <legend>Endereço</legend>
+    <div className="card__address-container">
+      <h3 className="card__address-header">{`Endereço${
+        addresses.length > 1 ? "s" : ""
+      }`}</h3>
       {addresses.map((address) => (
         <div key={address.id} className="card__address-wrapper">
           <div className="card__address-item">
             CEP: {address.cep.replace(cepRegex, "$1-$2")}
           </div>
           <div className="card__address-item">
-            Rua {address.street}, Nº {address.number}, bairro{" "}
+            Rua {address.street}, nº {address.number}, bairro{" "}
             {address.neighborhood},{" "}
-            <span className="card__address-item-city">
+            <span>
               {address.city} &mdash; {address.state}
             </span>
           </div>
@@ -26,7 +29,7 @@ export default function CardAddressInfo({ addresses }) {
           ) : null}
         </div>
       ))}
-    </fieldset>
+    </div>
   );
 }
 

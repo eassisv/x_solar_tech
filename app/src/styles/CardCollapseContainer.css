@@ -1,16 +1,13 @@
 .card__collapse-content {
   margin: 0px;
   border: none;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
   overflow: hidden;
-  max-height: 1200px;
   transition: max-height 0.5s ease-in 0.1s;
   transition: border-bottom 0 0.5s;
 }
 
 .card__collapse-content.closed {
-  border-bottom: none;
   max-height: 0;
   transition: max-height 0.3s ease-out;
 }
@@ -24,11 +21,6 @@
   cursor: pointer;
   padding: 0.4rem 0 0.475rem;
   background-color: transparent;
-  border: none;
-  border-top: 1px solid #fff;
-}
-
-.card__collapse-button.closed {
   border: none;
 }
 

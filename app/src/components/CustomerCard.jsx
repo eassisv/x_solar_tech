@@ -20,11 +20,13 @@ export default function CustomerCard({ customer }) {
           </Button>
         </div>
       </div>
+      <hr />
       <CardCustomerGeneralInfo
         cpf={customer.cpf}
         email={customer.email}
         phone={customer.phone}
       />
+      <hr />
       <CardCollapseContainer>
         <CardAddressInfo addresses={customer.addresses} />
       </CardCollapseContainer>

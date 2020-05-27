@@ -1,0 +1,19 @@
+.card__address-header {
+  margin: 0.3rem 0 0;
+  color: #303030;
+  font-size: 1rem;
+}
+
+.card__address-wrapper {
+  padding: 0.3rem 0;
+  color: #2a2a2a;
+  font-size: 0.9rem;
+}
+
+.card__address-item {
+  margin: 0.255rem 0;
+}
+
+.card__address-item span {
+  display: inline-block;
+}

@@ -12,7 +12,7 @@ export default function CustomerCard({ customer }) {
       <div className="card__header">
         <h4 className="card__tittle">{customer.name}</h4>
         <div className="card__header-buttons">
-          <Button variant="primary" small onClick={() => console.log("editar")}>
+          <Button variant="primary" small to={`/customers/${customer.id}`}>
             Editar
           </Button>
           <Button variant="danger" small onClick={() => console.log("excluir")}>
@@ -36,6 +36,7 @@ export default function CustomerCard({ customer }) {
 
 CustomerCard.propTypes = {
   customer: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     cpf: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,

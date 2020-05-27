@@ -7,7 +7,7 @@ import CustomerSearchBar from "../components/CustomerSearchBar";
 export default function CustomerListView() {
   return (
     <Container>
-      <Button variant="primary" onClick={() => console.log("Cliquei")}>
+      <Button variant="primary" to="/customers/new">
         Adicionar Cliente
       </Button>
       <CustomerSearchBar onStopTyping={(value) => console.log(value)} />

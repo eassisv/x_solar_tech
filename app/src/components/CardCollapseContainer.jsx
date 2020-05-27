@@ -7,11 +7,11 @@ export default function CardCollapseContainer({ children }) {
   const collapseClass = useMemo(() => (closed ? " closed" : ""), [closed]);
 
   return (
-    <div className={`card__collapse-container${collapseClass}`}>
-      {children}
+    <div className="card__collapse-container">
+      <div className={`card__collapse-content${collapseClass}`}>{children}</div>
       <button
         type="button"
-        className="card__collapse-button"
+        className={`card__collapse-button${collapseClass}`}
         onClick={() => setClosed(!closed)}
       >
         <div className={`card__collapse-button-icon${collapseClass}`} />

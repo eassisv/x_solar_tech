@@ -22,11 +22,11 @@ export default function CardAddressInfo({ addresses }) {
               {address.city} &mdash; {address.state}
             </span>
           </div>
-          {address.others ? (
+          {address.others && (
             <div className="card__address-item">
               Complemento: {address.others}
             </div>
-          ) : null}
+          )}
         </div>
       ))}
     </div>

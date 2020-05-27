@@ -9,7 +9,7 @@ export default function CardCollapseContainer({ children }) {
   return (
     <div className="card__collapse-container">
       <div className={`card__collapse-content${collapseClass}`}>{children}</div>
-      {!closed ? <hr /> : null}
+      {!closed && <hr />}
       <button
         type="button"
         className={`card__collapse-button${collapseClass}`}

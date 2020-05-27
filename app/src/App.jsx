@@ -1,15 +1,25 @@
 import React from "react";
-import Button from "./components/Button";
-import Container from "./components/Container";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import CustomerListView from "./views/CustomerListView";
+import CustomerCreateAndEditView from "./views/CustomerCreateAndEditView";
 
-const App = () => (
-  <div className="app">
-    <Container>
-      <Button variant="" onClick={() => console.log("Cliquei")}>
-        Adicionar Cliente
-      </Button>
-    </Container>
-  </div>
-);
-
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <Switch>
+        <Redirect exact path="/" to="/customers" />
+        <Route exact path="/customers">
+          <CustomerListView />
+        </Route>
+        <Route exact path={["/customers/:id", "/customers/new"]}>
+          <CustomerCreateAndEditView />
+        </Route>
+      </Switch>
+    </Router>
+  );
+}

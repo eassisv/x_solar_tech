@@ -3,18 +3,11 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "../../styles/Button.css";
 
-export default function Button({
-  children,
-  variant,
-  small,
-  onClick,
-  to,
-  exact,
-}) {
+export default function Button({ children, variant, small, onClick, to }) {
   const className = `button ${variant}${small ? " small" : ""}`;
 
   return to !== "" ? (
-    <Link className={className} to={to} exact={exact}>
+    <Link className={className} to={to}>
       {children}
     </Link>
   ) : (
@@ -30,7 +23,6 @@ Button.propTypes = {
   small: PropTypes.bool,
   onClick: PropTypes.func,
   to: PropTypes.string,
-  exact: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -38,5 +30,4 @@ Button.defaultProps = {
   small: false,
   onClick: () => {},
   to: "",
-  exact: false,
 };

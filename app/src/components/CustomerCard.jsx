@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Button from "./common/Button";
 import CardCustomerGeneralInfo from "./CardCustomerGeneralInfo";
 import CardAddressInfo from "./CardAddressInfo";
 import CardCollapseContainer from "./CardCollapseContainer";
@@ -8,7 +9,17 @@ import "../styles/CustomerCard.css";
 export default function CustomerCard({ customer }) {
   return (
     <div className="card__container">
-      <h4 className="card__tittle">{customer.name}</h4>
+      <div className="card__header">
+        <h4 className="card__tittle">{customer.name}</h4>
+        <div className="card__header-buttons">
+          <Button variant="primary" small onClick={() => console.log("editar")}>
+            Editar
+          </Button>
+          <Button variant="danger" small onClick={() => console.log("excluir")}>
+            Excluir
+          </Button>
+        </div>
+      </div>
       <CardCustomerGeneralInfo
         cpf={customer.cpf}
         email={customer.email}

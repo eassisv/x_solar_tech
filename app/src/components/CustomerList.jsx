@@ -2,37 +2,41 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CustomerCard from "./CustomerCard";
 import Spinner from "./common/Spinner";
+import "../styles/CustomerList.css";
 
 const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 
 export default function CustomerList({ search }) {
   const [loading, setLoading] = useState(true);
   const [customerList, setCustomerList] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    async function fetchData(search) {
+    (async () => {
       setLoading(true);
       try {
-        const params = search !== "" ? { search } : {};
         const response = await instance.get("/customers", {
-          params,
+          params: search !== "" ? { search } : {},
         });
         setCustomerList(response.data);
+        setError(false);
       } catch (err) {
-        console.log(err);
+        setCustomerList([]);
+        setError(true);
       }
-      setLoading(false);
-    }
-    fetchData(search);
+      // setLoading(false);
+    })();
   }, [search]);
 
-  return loading ? (
-    <Spinner />
-  ) : (
+  return (
     <div className="list__container">
-      {customerList.map((customer) => (
-        <CustomerCard key={customer.id} customer={customer} />
-      ))}
+      {loading ? (
+        <Spinner />
+      ) : (
+        customerList.map((customer) => (
+          <CustomerCard key={customer.id} customer={customer} />
+        ))
+      )}
     </div>
   );
 }

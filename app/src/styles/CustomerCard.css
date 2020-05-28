@@ -12,7 +12,11 @@
 }
 
 .card__container:first-child {
-  margin-top: 0.9rem;
+  margin-top: 0;
+}
+
+.card__container:last-child {
+  margin-bottom: 0;
 }
 
 .card__container:hover {

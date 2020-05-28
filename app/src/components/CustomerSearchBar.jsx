@@ -10,7 +10,7 @@ export default function CustomerSearchBar({ onStopTyping }) {
     const inputValue = event.target.value;
     if (timer) clearTimeout(timer);
     setValue(inputValue);
-    if (inputValue) setTimer(setTimeout(() => onStopTyping(inputValue), 1000));
+    setTimer(setTimeout(() => onStopTyping(inputValue), 500));
   }
 
   return (

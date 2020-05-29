@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import "../styles/CustomerSearchBar.css";
+import Input from "./common/Input";
 
 export default function CustomerSearchBar({ onStopTyping }) {
   const [value, setValue] = useState("");
@@ -14,15 +14,12 @@ export default function CustomerSearchBar({ onStopTyping }) {
   }
 
   return (
-    <div className="search-bar__wrapper">
-      <input
-        type="text"
-        className="search-bar__input"
-        placeholder="Nome, CPF, Email ou Telefone"
-        value={value}
-        onChange={onValueChangeHandle}
-      />
-    </div>
+    <Input
+      type="email"
+      placeholder="Nome, CPF, Email ou Telefone"
+      value={value}
+      onChange={onValueChangeHandle}
+    />
   );
 }
 

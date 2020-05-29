@@ -30,7 +30,7 @@ const getFilterObj = (search) =>
   search
     ? {
         [Op.or]: fieldsToSearch.reduce(
-          (acc, field) => ({ ...acc, [field]: { [Op.like]: `%${search}%` } }),
+          (acc, field) => ({ ...acc, [field]: { [Op.iLike]: `%${search}%` } }),
           {},
         ),
       }
@@ -47,7 +47,7 @@ module.exports = {
     const where = getFilterObj(search);
 
     const page = getPageNumber(req.query.page);
-    const pageSize = 2;
+    const pageSize = 10;
     const offset = (page - 1) * pageSize;
 
     try {

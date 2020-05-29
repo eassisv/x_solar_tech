@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Spinner from "./common/Spinner";
 import ErrorMessage from "./common/ErrorMessage";
 import CustomerCard from "./CustomerCard";
@@ -28,3 +29,17 @@ export default function CustomerList({
     </>
   );
 }
+
+CustomerList.propTypes = {
+  loading: PropTypes.bool,
+  customerList: PropTypes.arrayOf(PropTypes.object),
+  currentPage: PropTypes.number,
+  lastPage: PropTypes.number,
+};
+
+CustomerList.defaultProps = {
+  loading: false,
+  customerList: [],
+  currentPage: 1,
+  lastPage: 1,
+};

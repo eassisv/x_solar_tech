@@ -43,7 +43,7 @@ export default function CustomerListView() {
       <Button variant="primary" to="/customers/new">
         Adicionar Cliente
       </Button>
-      <CustomerSearchBar onStopTyping={(value) => setSearch(value)} />
+      <CustomerSearchBar onStopTyping={setSearch} />
       <CustomerList
         loading={loading}
         customerList={customerList}

@@ -1,42 +1,30 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import CustomerCard from "./CustomerCard";
+import React from "react";
 import Spinner from "./common/Spinner";
+import ErrorMessage from "./common/ErrorMessage";
+import CustomerCard from "./CustomerCard";
+import CustomerListPagination from "./CustomerListPagination";
 import "../styles/CustomerList.css";
 
-const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
-
-export default function CustomerList({ search }) {
-  const [loading, setLoading] = useState(true);
-  const [customerList, setCustomerList] = useState([]);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const response = await instance.get("/customers", {
-          params: search !== "" ? { search } : {},
-        });
-        setCustomerList(response.data);
-        setError(false);
-      } catch (err) {
-        setCustomerList([]);
-        setError(true);
-      }
-      // setLoading(false);
-    })();
-  }, [search]);
+export default function CustomerList({
+  loading,
+  customerList,
+  currentPage,
+  lastPage,
+}) {
+  if (customerList === null && loading === false) return <ErrorMessage />;
 
   return (
-    <div className="list__container">
-      {loading ? (
-        <Spinner />
-      ) : (
-        customerList.map((customer) => (
-          <CustomerCard key={customer.id} customer={customer} />
-        ))
-      )}
-    </div>
+    <>
+      <CustomerListPagination currentPage={currentPage} lastPage={lastPage} />
+      <div className="list__container">
+        {loading ? (
+          <Spinner />
+        ) : (
+          customerList.map((customer) => (
+            <CustomerCard key={customer.id} customer={customer} />
+          ))
+        )}
+      </div>
+    </>
   );
 }

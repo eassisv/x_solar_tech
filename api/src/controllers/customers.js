@@ -23,35 +23,60 @@ const performQueriesWithTransaction = async (queries) => {
   }
 };
 
+/* gera um objeto onde cara campo de fieldsToSearch recebe um objeto
+  na forma { [Op.like]: `%${search}%` } caso search tenha valor  não nulo */
+const fieldsToSearch = ['name', 'email', 'phone', 'cpf'];
+const getFilterObj = (search) =>
+  search
+    ? {
+        [Op.or]: fieldsToSearch.reduce(
+          (acc, field) => ({ ...acc, [field]: { [Op.like]: `%${search}%` } }),
+          {},
+        ),
+      }
+    : {};
+
+const getPageNumber = (page) => {
+  const parsedPage = Number(page);
+  return Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+};
+
 module.exports = {
   async list(req, res) {
     const { search } = req.query;
-    const fieldsToSearch = ['name', 'email', 'phone', 'cpf'];
-    /* gera um objeto onde cara campo de fieldsToSearch recebe um objeto
-    na forma { [Op.like]: `%${search}%` } caso search tenha valor  não nulo */
-    const where = search
-      ? {
-          [Op.or]: fieldsToSearch.reduce(
-            (acc, field) => ({ ...acc, [field]: { [Op.like]: `%${search}%` } }),
-            {},
-          ),
-        }
-      : {};
+    const where = getFilterObj(search);
 
-    const customers = await Customer.findAll({
-      attributes: { exclude: ['createdAt'] },
-      include: [Customer.Addresses],
-      where,
-    });
-    res.json(customers);
+    const page = getPageNumber(req.query.page);
+    const pageSize = 2;
+    const offset = (page - 1) * pageSize;
+
+    try {
+      const { count, rows } = await Customer.findAndCountAll({
+        distinct: true,
+        include: [Customer.Addresses],
+        order: ['updatedAt', 'createdAt', 'name'],
+        limit: pageSize,
+        offset,
+        where,
+      });
+      res.json({
+        page,
+        numPages: Math.ceil(count / pageSize),
+        customers: rows,
+      });
+    } catch (err) {
+      res.status(500).json();
+    }
   },
 
   async store(req, res) {
     const data = { ...req.data, email: normalizeEmail(req.data.email) };
+
     const [customer] = await performQueriesWithTransaction([
       (transaction) =>
         Customer.create(data, { include: [Customer.Addresses], transaction }),
     ]);
+
     if (customer) return res.status(201).json(customer);
     return res.status(500).json();
   },
@@ -87,6 +112,7 @@ module.exports = {
 
   async delete(req, res) {
     req.instance.destroy();
+
     res.json();
   },
 };

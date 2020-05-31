@@ -16,7 +16,7 @@ export default function App() {
         <Route exact path="/customers">
           <CustomerListView />
         </Route>
-        <Route exact path={["/customers/:id", "/customers/new"]}>
+        <Route exact path="/customers/:id">
           <CustomerCreateAndEditView />
         </Route>
       </Switch>

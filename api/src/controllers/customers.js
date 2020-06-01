@@ -47,7 +47,7 @@ module.exports = {
     const where = getFilterObj(search);
 
     const page = getPageNumber(req.query.page);
-    const pageSize = 10;
+    const pageSize = 20;
     const offset = (page - 1) * pageSize;
 
     try {
@@ -111,7 +111,7 @@ module.exports = {
   },
 
   async delete(req, res) {
-    req.instance.destroy();
+    await req.instance.destroy();
 
     res.json();
   },

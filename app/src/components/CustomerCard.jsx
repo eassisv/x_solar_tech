@@ -6,7 +6,7 @@ import CardAddressInfo from "./CardAddressInfo";
 import CardCollapseContainer from "./CardCollapseContainer";
 import "../styles/CustomerCard.css";
 
-export default function CustomerCard({ customer }) {
+export default function CustomerCard({ customer, onDelete }) {
   return (
     <div className="card__container">
       <div className="card__header">
@@ -15,7 +15,7 @@ export default function CustomerCard({ customer }) {
           <Button variant="primary" small to={`/customers/${customer.id}`}>
             Editar
           </Button>
-          <Button variant="danger" small onClick={() => console.log("excluir")}>
+          <Button variant="danger" small onClick={() => onDelete(customer.id)}>
             Excluir
           </Button>
         </div>
@@ -53,4 +53,9 @@ CustomerCard.propTypes = {
       })
     ),
   }).isRequired,
+  onDelete: PropTypes.func,
+};
+
+CustomerCard.defaultProps = {
+  onDelete: () => {},
 };

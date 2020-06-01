@@ -15,8 +15,11 @@ export default function CustomerListPagination({ currentPage, lastPage }) {
       ++s
     ) {
       linkList.push(
-        <li className="pagination__link">
-          <Link className={s === currentPage && "active"} to={`${baseUrl}${s}`}>
+        <li key={s} className="pagination__link">
+          <Link
+            className={s === currentPage ? "active" : ""}
+            to={`${baseUrl}${s}`}
+          >
             {s}
           </Link>
         </li>

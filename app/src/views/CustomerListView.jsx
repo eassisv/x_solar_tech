@@ -13,6 +13,7 @@ const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 export default function CustomerListView() {
   const history = useHistory();
   const { currentPage, search } = useCurrentPageAndSearch();
+  const [toFetchData, setToFetchData] = useState(true);
   const [loading, setLoading] = useState(false);
   const [customerList, setCustomerList] = useState([]);
   const [lastPage, setLastPage] = useState(currentPage);
@@ -21,21 +22,32 @@ export default function CustomerListView() {
     (async () => {
       setLoading(true);
       try {
-        const response = await instance.get("/customers", {
+        const { data } = await instance.get("/customers", {
           params: { page: currentPage, ...(search !== "" ? { search } : {}) },
         });
-
-        setLastPage(response.data.numPages);
-        setCustomerList(response.data.customers);
+        setCustomerList(data.customers);
+        setLastPage(data.numPages);
       } catch (err) {
         setCustomerList(null);
       }
+      setToFetchData(false);
       setLoading(false);
     })();
-  }, [search, currentPage]);
+  }, [search, currentPage, toFetchData]);
 
   function onSearchHandle(value) {
     history.push(`customers?${value && `search=${value}`}`);
+  }
+
+  async function onDeleteCardHandle(customerId) {
+    setLoading(true);
+    try {
+      await instance.delete(`/customers/${customerId}/`);
+      setToFetchData(true);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
   }
 
   return (
@@ -44,7 +56,11 @@ export default function CustomerListView() {
         Adicionar Cliente
       </Button>
       <CustomerSearchBar onStopTyping={onSearchHandle} />
-      <CustomerList loading={loading} customerList={customerList} />
+      <CustomerList
+        loading={loading}
+        customerList={customerList}
+        onDeleteCard={onDeleteCardHandle}
+      />
       <CustomerListPagination currentPage={currentPage} lastPage={lastPage} />
     </Container>
   );

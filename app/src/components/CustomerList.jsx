@@ -5,7 +5,7 @@ import ErrorMessage from "./common/ErrorMessage";
 import CustomerCard from "./CustomerCard";
 import "../styles/CustomerList.css";
 
-export default function CustomerList({ loading, customerList }) {
+export default function CustomerList({ loading, customerList, onDeleteCard }) {
   if (customerList === null && loading === false) return <ErrorMessage />;
 
   return (
@@ -14,7 +14,11 @@ export default function CustomerList({ loading, customerList }) {
         <Spinner />
       ) : (
         customerList.map((customer) => (
-          <CustomerCard key={customer.id} customer={customer} />
+          <CustomerCard
+            key={customer.id}
+            customer={customer}
+            onDelete={onDeleteCard}
+          />
         ))
       )}
     </div>
@@ -24,9 +28,11 @@ export default function CustomerList({ loading, customerList }) {
 CustomerList.propTypes = {
   loading: PropTypes.bool,
   customerList: PropTypes.arrayOf(PropTypes.object),
+  onDeleteCard: PropTypes.func,
 };
 
 CustomerList.defaultProps = {
   loading: false,
   customerList: [],
+  onDeleteCard: () => {},
 };

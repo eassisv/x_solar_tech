@@ -6,7 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import CustomerListView from "./views/CustomerListView";
-import CustomerCreateAndEditView from "./views/CustomerCreateAndEditView";
+import CustomerCreateAndEditCustomerView from "./views/CustomerCreateAndEditCustomerView";
 
 export default function App() {
   return (
@@ -17,7 +17,7 @@ export default function App() {
           <CustomerListView />
         </Route>
         <Route exact path="/customers/:id">
-          <CustomerCreateAndEditView />
+          <CustomerCreateAndEditCustomerView />
         </Route>
       </Switch>
     </Router>

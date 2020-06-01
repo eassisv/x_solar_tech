@@ -1,0 +1,10 @@
+.column {
+  flex-basis: 0;
+  flex-grow: 1;
+  position: relative;
+  min-width: 278px;
+  max-width: 100%;
+  width: 100%;
+  padding: 0 5px;
+  box-sizing: border-box;
+}

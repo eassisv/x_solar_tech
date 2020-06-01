@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Button from "./common/Button";
+import Button from "../common/Button";
 import CardCustomerGeneralInfo from "./CardCustomerGeneralInfo";
 import CardAddressInfo from "./CardAddressInfo";
 import CardCollapseContainer from "./CardCollapseContainer";
-import "../styles/CustomerCard.css";
+import "../../styles/CustomerCard.css";
 
 export default function CustomerCard({ customer, onDelete }) {
   return (

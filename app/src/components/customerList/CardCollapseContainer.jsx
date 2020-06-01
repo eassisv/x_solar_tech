@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import "../styles/CardCollapseContainer.css";
+import "../../styles/CardCollapseContainer.css";
 
 export default function CardCollapseContainer({ children }) {
   const [closed, setClosed] = useState(true);

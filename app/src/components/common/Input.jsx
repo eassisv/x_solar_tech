@@ -2,19 +2,34 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../../styles/Input.css";
 
-export default function Input({ type, placeholder, value, onChange }) {
-  function onChangeHandle(input) {
-    onChange(input);
+export default function Input({
+  type,
+  label,
+  name,
+  placeholder,
+  value,
+  onChange,
+}) {
+  function onChangeHandle(event) {
+    onChange(event.target.value);
   }
 
   return (
-    <input
-      className="form-input"
-      type={type}
-      value={value}
-      placeholder={placeholder}
-      onChange={onChangeHandle}
-    />
+    <div className="form-group">
+      {label && (
+        <label className="form-label" htmlFor={name}>
+          {label}
+        </label>
+      )}
+      <input
+        className="form-input"
+        name={name}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChangeHandle}
+      />
+    </div>
   );
 }
 

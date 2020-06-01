@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../styles/CardAddressInfo.css";
+import "../../styles/CardAddressInfo.css";
 
 const cepRegex = /^([0-9]{5})([0-9]{3})$/;
 

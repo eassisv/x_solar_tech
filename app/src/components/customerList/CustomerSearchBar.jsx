@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import useCurrentPageAndSearch from "../hooks";
-import Input from "./common/Input";
+import useCurrentPageAndSearch from "../../hooks";
+import Input from "../common/Input";
 
 export default function CustomerSearchBar({ onStopTyping }) {
   const { search } = useCurrentPageAndSearch();
@@ -12,8 +12,7 @@ export default function CustomerSearchBar({ onStopTyping }) {
     setValue(search);
   }, [search]);
 
-  function onValueChangeHandle(event) {
-    const inputValue = event.target.value;
+  function onValueChangeHandle(inputValue) {
     if (timer) clearTimeout(timer);
     setValue(inputValue);
     setTimer(setTimeout(() => onStopTyping(inputValue), 500));

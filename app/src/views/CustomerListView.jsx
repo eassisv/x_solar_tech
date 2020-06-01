@@ -4,9 +4,9 @@ import axios from "axios";
 import useCurrentPageAndSearch from "../hooks";
 import Button from "../components/common/Button";
 import Container from "../components/common/Container";
-import CustomerList from "../components/CustomerList";
-import CustomerListPagination from "../components/CustomerListPagination";
-import CustomerSearchBar from "../components/CustomerSearchBar";
+import CustomerList from "../components/customerList/CustomerList";
+import CustomerListPagination from "../components/customerList/CustomerListPagination";
+import CustomerSearchBar from "../components/customerList/CustomerSearchBar";
 
 const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 
@@ -36,7 +36,7 @@ export default function CustomerListView() {
   }, [search, currentPage, toFetchData]);
 
   function onSearchHandle(value) {
-    history.push(`customers?${value && `search=${value}`}`);
+    history.push(`/customers?${value && `search=${value}`}`);
   }
 
   async function onDeleteCardHandle(customerId) {

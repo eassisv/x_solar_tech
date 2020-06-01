@@ -69,6 +69,10 @@ module.exports = {
     }
   },
 
+  async get(req, res) {
+    return res.json(req.instance);
+  },
+
   async store(req, res) {
     const data = { ...req.data, email: normalizeEmail(req.data.email) };
 
@@ -113,6 +117,6 @@ module.exports = {
   async delete(req, res) {
     await req.instance.destroy();
 
-    res.json();
+    return res.json();
   },
 };

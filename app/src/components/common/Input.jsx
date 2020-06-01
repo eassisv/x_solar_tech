@@ -20,7 +20,7 @@ export default function Input({ type, placeholder, value, onChange }) {
 
 Input.propTypes = {
   type: PropTypes.string,
-  value: PropTypes.oneOf(PropTypes.string, PropTypes.number).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
 };

@@ -3,6 +3,8 @@
   width: 740px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 @media all and (max-width: 768px) {

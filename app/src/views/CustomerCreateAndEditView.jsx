@@ -1,5 +1,15 @@
 import React from "react";
+import { Link, useParams } from "react-router-dom";
 
 export default function CustomerCreateAndEditView() {
-  return <div>Edit Page</div>;
+  const { id } = useParams();
+
+  return (
+    <div>
+      {id || "Hello World"}
+      <Link to="/customers" replace>
+        Voltar
+      </Link>
+    </div>
+  );
 }

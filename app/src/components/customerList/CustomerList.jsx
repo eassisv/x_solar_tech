@@ -11,13 +11,14 @@ export default function CustomerList({ loading, customerList, onDeleteCard }) {
   return (
     <div className="list__container">
       {loading && <Loading />}
-      {customerList.map((customer) => (
-        <CustomerCard
-          key={customer.id}
-          customer={customer}
-          onDelete={onDeleteCard}
-        />
-      ))}
+      {customerList &&
+        customerList.map((customer) => (
+          <CustomerCard
+            key={customer.id}
+            customer={customer}
+            onDelete={onDeleteCard}
+          />
+        ))}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import Loading from "../components/common/Loading";
 import Container from "../components/common/Container";
 import CustomerForm from "../components/customerForm/CustomerForm";
 
@@ -9,7 +10,7 @@ const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 export default function CustomerCreateAndEditView() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
-  const [customer, setCustomer] = useState({});
+  const [customer, setCustomer] = useState(null);
 
   useEffect(() => {
     if (id !== "new") {
@@ -31,7 +32,7 @@ export default function CustomerCreateAndEditView() {
   return (
     <Container>
       <Link to="/customers/">Voltar</Link>
-      <CustomerForm loading={loading} customer={customer} />
+      {loading ? <Loading /> : <CustomerForm customer={customer} />}
     </Container>
   );
 }

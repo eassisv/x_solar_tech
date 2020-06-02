@@ -1,74 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import Row from "../common/Row";
-import Column from "../common/Column";
-import Input from "../common/Input";
-import Loading from "../common/Loading";
 import "../../styles/CustomerForm.css";
+import useFormValidation from "../../hooks/formValidation";
+import { customerSchema } from "../../utils/schemas";
+import CustomerInfoForm from "./CustomerInfoForm";
 
-export default function CreateAndEditCustomerForm({ loading, customer }) {
-  const [formData, setFormData] = useState({});
+function getCustomerInitialState(customer) {
+  const initialState = { name: "", cpf: "", email: "", phone: "" };
+  return customer
+    ? Object.keys(initialState).reduce(
+        (acc, field) => ({ ...acc, [field]: customer[field] }),
+        {}
+      )
+    : initialState;
+}
 
-  useEffect(() => {
-    const tmp = {};
-    (() => {
-      [("name", "email", "phone", "cpf", "addresses")].forEach((field) => {
-        tmp[field] = customer[field] || "";
-      });
-    })();
-  }, [customer]);
+export default function CreateAndEditCustomerForm({ customer }) {
+  const customerForm = useFormValidation(
+    getCustomerInitialState(customer),
+    customerSchema
+  );
+
+  console.log(customerForm);
 
   return (
     <form className="form__container">
-      {loading && <Loading />}
-      <Row>
-        <Column>
-          <Input
-            name="name"
-            label="Nome"
-            value={formData.name}
-            onChange={(value) => setFormData({ ...formData, name: value })}
-          />
-        </Column>
-        <Column>
-          <Input
-            name="cpf"
-            label="CPF"
-            value={formData.cpf}
-            onChange={console.log}
-          />
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <Input
-            name="email"
-            label="Email"
-            value={formData.email}
-            onChange={(value) => setFormData({ ...formData, name: value })}
-          />
-        </Column>
-        <Column>
-          <Input
-            name="phone"
-            label="Telefone"
-            value={formData.phone}
-            onChange={console.log}
-          />
-        </Column>
-      </Row>
-      <Input
-        name="phone"
-        label="Telefone"
-        value={formData.phone}
-        onChange={console.log}
-      />
+      <CustomerInfoForm customerForm={customerForm} />
     </form>
   );
 }
 
 CreateAndEditCustomerForm.propTypes = {
-  loading: PropTypes.bool,
   customer: PropTypes.shape({
     id: PropTypes.number,
     street: PropTypes.string,
@@ -81,6 +43,5 @@ CreateAndEditCustomerForm.propTypes = {
 };
 
 CreateAndEditCustomerForm.defaultProps = {
-  loading: false,
   customer: {},
 };

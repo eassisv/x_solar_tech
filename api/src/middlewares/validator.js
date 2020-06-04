@@ -8,7 +8,7 @@ module.exports = (schema) => async (req, res, next) => {
       context: { instance: req.instance },
     });
     req.data = data;
-    next();
+    return next();
   } catch (err) {
     const errors = err.inner
       ? err.inner.reduce(
@@ -21,6 +21,6 @@ module.exports = (schema) => async (req, res, next) => {
           {},
         )
       : err;
-    res.status(400).json({ errors });
+    return res.status(400).json({ errors });
   }
 };

@@ -59,19 +59,19 @@ module.exports = {
         offset,
         where,
       });
-      res.json({
+      return res.json({
         page,
         numPages: Math.ceil(count / pageSize),
         customers: rows,
       });
     } catch (err) {
-      res.status(500).json();
+      return res.status(500).json();
     }
   },
 
   async get(req, res) {
-    const { instance  } = req;
-    await instance.reload({ include: [Customer.Addresses] })
+    const { instance } = req;
+    await instance.reload({ include: [Customer.Addresses] });
     return res.json(instance);
   },
 
@@ -120,5 +120,17 @@ module.exports = {
     await req.instance.destroy();
 
     return res.json();
+  },
+
+  async verify(req, res) {
+    const { email, cpf } = req.query;
+    if (!email && !cpf)
+      return res
+        .status(400)
+        .json({ error: 'Query must has email or CPF to be verified' });
+    const instance = await Customer.findAll({
+      where: { [Op.or]: { email: email || null, cpf: cpf || null } },
+    });
+    return res.json({ emailOrCpfAlreadyUsed: instance.length > 0 });
   },
 };

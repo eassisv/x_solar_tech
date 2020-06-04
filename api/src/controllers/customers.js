@@ -70,7 +70,9 @@ module.exports = {
   },
 
   async get(req, res) {
-    return res.json(req.instance);
+    const { instance  } = req;
+    await instance.reload({ include: [Customer.Addresses] })
+    return res.json(instance);
   },
 
   async store(req, res) {

@@ -1,12 +1,7 @@
 .form__container {
   position: relative;
-}
-
-.form__loader {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3rem 0;
+  margin: 0.9rem 0;
+  padding: 0.8rem 1.2rem 0.5rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2);
 }

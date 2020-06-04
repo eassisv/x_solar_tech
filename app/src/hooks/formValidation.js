@@ -1,59 +1,46 @@
 import { useState, useEffect, useCallback } from "react";
 
-const getUntouchedObj = (state) =>
-  Object.keys(state).reduce((acc, field) => ({ ...acc, [field]: false }), {});
-
 const getErrors = ({ inner }) =>
   inner
-    ? inner.reduce((acc, err) => ({ [err.path]: err.errors, ...acc }), {})
+    ? inner.reduce((acc, err) => ({ [err.path]: err.errors[0], ...acc }), {})
     : {};
 
 export default function useFormValidation(initialState, schema) {
   const [state, setState] = useState(initialState);
-  const [touched, setTouched] = useState(getUntouchedObj(initialState));
   const [errors, setErrors] = useState(false);
-  // const [yupSchema, setYupSchema] = useState(schema);
 
-  const validate = useCallback(async () => {
-    try {
-      await schema.validate(state, { abortEarly: false });
-      setErrors({});
-    } catch (err) {
-      console.log(err);
-      setErrors(getErrors(err));
-    }
+  console.log("chamando o hook");
+
+  const validate = useCallback(() => {
+    schema
+      .validate(state, { abortEarly: false })
+      .then(() => {
+        setErrors({});
+      })
+      .catch((err) => {
+        console.log(err);
+        setErrors(getErrors(err));
+      });
   }, [state, schema]);
 
-  const changeHandle = useCallback((field, value) => {
-    setState((oldState) => ({ ...oldState, [field]: value }));
-  }, []);
-
-  const blurHandle = useCallback((field) => {
-    setTouched((oldValue) => ({ ...oldValue, [field]: true }));
-  }, []);
-
-  const resetState = useCallback((newState) => {
-    setState(newState);
-    setTouched(getUntouchedObj(newState));
-  }, []);
+  const onChangeHandle = useCallback(
+    (field) => (value) =>
+      setState((oldState) => ({
+        ...oldState,
+        [field]: value,
+      })),
+    []
+  );
 
   const handleSubmit = useCallback(async () => {
     await validate();
   }, [validate]);
 
-  useEffect(() => {
-    (async () => {
-      await validate();
-    })();
-  }, [state, validate]);
-
   return {
     state,
-    touched,
     errors,
-    resetState,
-    changeHandle,
-    blurHandle,
+    validate,
+    onChangeHandle,
     handleSubmit,
   };
 }

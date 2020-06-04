@@ -21,7 +21,7 @@ export default function CustomerSearchBar({ onStopTyping }) {
   return (
     <Input
       type="email"
-      placeholder="Nome, CPF, Email ou Telefone"
+      placeholder="Buscar cliente por nome, CPF, email ou telefone"
       value={value}
       onChange={onValueChangeHandle}
     />

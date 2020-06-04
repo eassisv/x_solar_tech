@@ -1,7 +1,7 @@
 .form-input {
   box-sizing: border-box;
   width: 100%;
-  color: #222;
+  color: #3a3a3a;
   font-size: 1em;
   font-family: "Fira Sans", sans-serif;
   border: 1px solid #f1f1f1;
@@ -22,4 +22,16 @@
   width: 100%;
   border: 1px solid #457b9d;
   box-shadow: 0 1px 2px #26435644, 0 2px 4px #355f7a44;
+}
+
+.form-label {
+  color: #333333;
+  font-size: 0.9rem;
+}
+
+.form-error {
+  color: #f13939;
+  font-size: 0.67rem;
+  line-height: 0.67rem;
+  font-style: italic;
 }

@@ -9,13 +9,13 @@ const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 
 export default function CustomerCreateAndEditView() {
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [customer, setCustomer] = useState(null);
 
   useEffect(() => {
-    if (id !== "new") {
-      (async () => {
-        setLoading(true);
+    (async () => {
+      setLoading(true);
+      if (id !== "new")
         try {
           /* buscamos o usuário novamente para garantir
           que os dados estão atualizados */
@@ -24,10 +24,9 @@ export default function CustomerCreateAndEditView() {
         } catch (err) {
           console.log(err.response);
         }
-        setLoading(false);
-      })();
-    }
-  }, [id]);
+      setLoading(false);
+    })();
+  }, [id, loading]);
 
   return (
     <Container>

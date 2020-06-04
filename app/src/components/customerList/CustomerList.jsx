@@ -6,6 +6,8 @@ import CustomerCard from "./CustomerCard";
 import "../../styles/CustomerList.css";
 
 export default function CustomerList({ loading, customerList, onDeleteCard }) {
+  console.log("mounting");
+
   if (customerList === null && loading === false) return <ErrorMessage />;
 
   return (

@@ -1,13 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import InputMask from "react-input-mask";
 import "../../styles/Input.css";
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const getInput = (props) => <input {...props} className="form-input" />;
-
 export default function Input({
-  type,
   name,
   value,
   error,
@@ -16,9 +11,11 @@ export default function Input({
   onChange,
   onBlur,
   mask,
+  maxLength,
 }) {
   function onChangeHandle(event) {
-    onChange(event.target.value);
+    const inputValue = mask(event.target.value);
+    if (maxLength && inputValue.length <= maxLength) onChange(inputValue);
   }
 
   return (
@@ -28,37 +25,21 @@ export default function Input({
           {label}
         </label>
       )}
-      {mask ? (
-        <InputMask
-          formatChars={{ "9": "[0-9]", "?": "[0-9 ]" }}
-          maskChar={null}
-          mask={mask}
-          type={type}
-          name={name}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChangeHandle}
-          onBlur={onBlur}
-        >
-          {getInput}
-        </InputMask>
-      ) : (
-        getInput({
-          type,
-          name,
-          value,
-          placeholder,
-          onChange: onChangeHandle,
-          onBlur,
-        })
-      )}
-      <div>{error}</div>
+      <input
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        className="form-input"
+        type="text"
+        onChange={onChangeHandle}
+        onBlur={onBlur}
+      />
+      {error && <div className="form-error">{error}</div>}
     </div>
   );
 }
 
 Input.propTypes = {
-  type: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -66,15 +47,16 @@ Input.propTypes = {
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func,
   placeholder: PropTypes.string,
-  mask: PropTypes.string,
+  mask: PropTypes.func,
+  maxLength: PropTypes.number,
 };
 
 Input.defaultProps = {
-  type: "text",
   label: null,
   name: null,
   error: undefined,
   placeholder: "",
   onBlur: () => {},
-  mask: null,
+  mask: (value) => value,
+  maxLength: 254,
 };

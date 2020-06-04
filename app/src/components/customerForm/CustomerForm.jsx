@@ -1,12 +1,19 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import "../../styles/CustomerForm.css";
-import useFormValidation from "../../hooks/formValidation";
-import { customerSchema } from "../../utils/schemas";
+import customerSchema from "../../utils/schemas";
+import Button from "../common/Button";
 import CustomerInfoForm from "./CustomerInfoForm";
+import CustomerAddressForm from "./CustomerAddressForm";
 
 function getCustomerInitialState(customer) {
-  const initialState = { name: "", cpf: "", email: "", phone: "" };
+  const initialState = {
+    name: "",
+    cpf: "",
+    email: "",
+    phone: "",
+    addresses: [],
+  };
   return customer
     ? Object.keys(initialState).reduce(
         (acc, field) => ({ ...acc, [field]: customer[field] }),
@@ -15,22 +22,58 @@ function getCustomerInitialState(customer) {
     : initialState;
 }
 
-export default function CreateAndEditCustomerForm({ customer }) {
-  const customerForm = useFormValidation(
-    getCustomerInitialState(customer),
-    customerSchema
-  );
+const getErrors = ({ inner }) =>
+  inner
+    ? inner.reduce((acc, err) => ({ [err.path]: err.errors[0], ...acc }), {})
+    : {};
 
-  console.log(customerForm);
+export default function CustomerForm({ customer }) {
+  const [state, setState] = useState(getCustomerInitialState(customer));
+  const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+
+  const validate = useCallback(() => {
+    customerSchema
+      .validate(state, { abortEarly: false })
+      .then(() => {
+        setErrors({});
+      })
+      .catch((err) => {
+        setErrors(getErrors(err));
+      });
+  }, [state]);
+
+  function onChangeHandle(field) {
+    return (value) => setState((oldState) => ({ ...oldState, [field]: value }));
+  }
+
+  function onSubmitHandle(event) {
+    event.preventDefault();
+    setSubmitting(true);
+  }
+
+  useEffect(() => {
+    validate();
+  }, [state, validate]);
 
   return (
-    <form className="form__container">
-      <CustomerInfoForm customerForm={customerForm} />
+    <form className="form__container" onSubmit={onSubmitHandle}>
+      <CustomerInfoForm
+        state={state}
+        errors={errors}
+        onChangeHandle={onChangeHandle}
+        submitting={submitting}
+      />
+      <hr />
+      <CustomerAddressForm customerForm={{}} />
+      <Button type="submit" onClick={() => {}}>
+        {customer ? "Salvar" : "Cadastrar"}
+      </Button>
     </form>
   );
 }
 
-CreateAndEditCustomerForm.propTypes = {
+CustomerForm.propTypes = {
   customer: PropTypes.shape({
     id: PropTypes.number,
     street: PropTypes.string,
@@ -42,6 +85,6 @@ CreateAndEditCustomerForm.propTypes = {
   }),
 };
 
-CreateAndEditCustomerForm.defaultProps = {
+CustomerForm.defaultProps = {
   customer: {},
 };

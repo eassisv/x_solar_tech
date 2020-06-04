@@ -1,8 +1,6 @@
 .row {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  margin-left: -5px;
-  margin-right: -5px;
+  margin: 0.6rem -5px;
   box-sizing: border-box;
 }

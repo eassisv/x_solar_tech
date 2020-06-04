@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import "../../styles/CustomerForm.css";
@@ -6,13 +7,23 @@ import Button from "../common/Button";
 import CustomerInfoForm from "./CustomerInfoForm";
 import CustomerAddressForm from "./CustomerAddressForm";
 
+const emptyAddress = {
+  street: "",
+  number: "",
+  neighborhood: "",
+  city: "",
+  state: "",
+  cep: "",
+  others: "",
+};
+
 function getCustomerInitialState(customer) {
   const initialState = {
     name: "",
     cpf: "",
     email: "",
     phone: "",
-    addresses: [],
+    addresses: [emptyAddress],
   };
   return customer
     ? Object.keys(initialState).reduce(
@@ -27,48 +38,98 @@ const getErrors = ({ inner }) =>
     ? inner.reduce((acc, err) => ({ [err.path]: err.errors[0], ...acc }), {})
     : {};
 
-export default function CustomerForm({ customer }) {
+export default function CustomerForm({ customer, submitted, onSubmitHandle }) {
   const [state, setState] = useState(getCustomerInitialState(customer));
   const [errors, setErrors] = useState({});
-  const [submitting, setSubmitting] = useState(false);
 
-  const validate = useCallback(() => {
-    customerSchema
-      .validate(state, { abortEarly: false })
-      .then(() => {
-        setErrors({});
-      })
-      .catch((err) => {
-        setErrors(getErrors(err));
-      });
+  const validate = useCallback(async () => {
+    try {
+      await customerSchema.validate(state, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (err) {
+      setErrors(getErrors(err));
+      return false;
+    }
   }, [state]);
 
   function onChangeHandle(field) {
-    return (value) => setState((oldState) => ({ ...oldState, [field]: value }));
+    return (value) => {
+      // setSubmitting(false);
+      const stateField = field
+        .replace(/(\w+)\[(\d+)\]\.(\w+)/, "$1 $2 $3")
+        .split(" ");
+      if (stateField.length === 1)
+        setState((prevState) => ({ ...prevState, [field]: value }));
+      else {
+        const { addresses } = state;
+        const newAddress = {
+          ...addresses[stateField[1]],
+          [stateField[2]]: value,
+        };
+        const newAddressList = addresses;
+        newAddressList.splice(stateField[1], 1, newAddress);
+        setState((prevState) => ({ ...prevState, addresses: newAddressList }));
+      }
+    };
   }
 
-  function onSubmitHandle(event) {
+  async function beforeSubmit(event) {
     event.preventDefault();
-    setSubmitting(true);
+    const valid = await validate(true);
+    onSubmitHandle(
+      new Promise((resolve, reject) => {
+        if (valid) resolve({ ...state });
+        else reject();
+      })
+    );
+  }
+
+  function addAddress() {
+    const { addresses } = state;
+    setState((prevState) => ({
+      ...prevState,
+      addresses: [...addresses, emptyAddress],
+    }));
   }
 
   useEffect(() => {
-    validate();
+    (async () => {
+      await validate();
+    })();
   }, [state, validate]);
 
+  useEffect(() => {
+    setState(getCustomerInitialState(customer));
+  }, [customer]);
+
   return (
-    <form className="form__container" onSubmit={onSubmitHandle}>
+    <form className="form__container" onSubmit={beforeSubmit}>
       <CustomerInfoForm
         state={state}
         errors={errors}
         onChangeHandle={onChangeHandle}
-        submitting={submitting}
+        submitted={submitted}
       />
       <hr />
-      <CustomerAddressForm customerForm={{}} />
-      <Button type="submit" onClick={() => {}}>
-        {customer ? "Salvar" : "Cadastrar"}
-      </Button>
+      {state.addresses.map((address, index) => (
+        <CustomerAddressForm
+          key={index}
+          state={address}
+          errors={errors}
+          submitted={submitted}
+          onChangeHandle={onChangeHandle}
+          index={`addresses[${index}]`}
+        />
+      ))}
+      <div className="form__buttons-wrapper">
+        <Button variant="secondary" onClick={addAddress}>
+          Adicionar endereço
+        </Button>
+        <Button type="submit" onClick={() => {}}>
+          {customer ? "Salvar" : "Cadastrar"}
+        </Button>
+      </div>
     </form>
   );
 }
@@ -83,8 +144,12 @@ CustomerForm.propTypes = {
     cep: PropTypes.string,
     others: PropTypes.string,
   }),
+  submitted: PropTypes.bool,
+  onSubmitHandle: PropTypes.func,
 };
 
 CustomerForm.defaultProps = {
   customer: {},
+  submitted: false,
+  onSubmitHandle: () => {},
 };

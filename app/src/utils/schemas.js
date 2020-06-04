@@ -1,16 +1,20 @@
 import * as yup from "yup";
 import CPF from "cpf-check";
-import { phoneValidate } from "./validators";
+import { phoneValidate, numberValidate } from "./validators";
 
 yup.setLocale({
   mixed: {
     required: "Campo obrigatório",
   },
+  number: "Número inválido",
 });
 
 const address = yup.object().shape({
   street: yup.string().required(),
-  number: yup.number().required(),
+  number: yup
+    .string()
+    .required()
+    .test("is-number", "Número inválido", numberValidate),
   neighborhood: yup.string().required(),
   city: yup.string().required(),
   state: yup.string().required(),
@@ -22,12 +26,12 @@ export default yup.object().shape({
   name: yup.string().required(),
   cpf: yup
     .string()
-    .test("invalid-cpf", "CPF inválido", CPF.validate)
-    .required(),
+    .required()
+    .test("invalid-cpf", "CPF inválido", CPF.validate),
   email: yup.string().email("Email inválido").required(),
   phone: yup
     .string()
-    .test("invalid-phone", "Número inválido", phoneValidate)
-    .required(),
+    .required()
+    .test("invalid-phone", "Número inválido", phoneValidate),
   addresses: yup.array().of(address),
 });

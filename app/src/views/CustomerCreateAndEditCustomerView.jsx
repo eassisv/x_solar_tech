@@ -11,6 +11,7 @@ export default function CustomerCreateAndEditView() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [customer, setCustomer] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -26,12 +27,26 @@ export default function CustomerCreateAndEditView() {
         }
       setLoading(false);
     })();
-  }, [id, loading]);
+  }, [id]);
+
+  function onSubmitHandle(validate) {
+    setLoading(true);
+    setSubmitted(false);
+    validate.then(console.log).catch(() => {
+      setLoading(false);
+      setSubmitted(true);
+    });
+  }
 
   return (
     <Container>
       <Link to="/customers/">Voltar</Link>
-      {loading ? <Loading /> : <CustomerForm customer={customer} />}
+      {loading && <Loading />}
+      <CustomerForm
+        customer={customer}
+        submitted={submitted}
+        onSubmitHandle={onSubmitHandle}
+      />
     </Container>
   );
 }

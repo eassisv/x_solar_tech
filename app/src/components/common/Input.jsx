@@ -11,10 +11,14 @@ export default function Input({
   onChange,
   onBlur,
   mask,
+  type,
   maxLength,
 }) {
   function onChangeHandle(event) {
-    const inputValue = mask(event.target.value);
+    const input = event.target.value;
+    const inputValue = mask(
+      type === "number" ? input.replace(/\D/g, "") : input
+    );
     if (maxLength && inputValue.length <= maxLength) onChange(inputValue);
   }
 
@@ -27,7 +31,7 @@ export default function Input({
       )}
       <input
         name={name}
-        value={value}
+        value={mask(value)}
         placeholder={placeholder}
         className="form-input"
         type="text"
@@ -48,6 +52,7 @@ Input.propTypes = {
   onBlur: PropTypes.func,
   placeholder: PropTypes.string,
   mask: PropTypes.func,
+  type: PropTypes.oneOf(["text", "number"]),
   maxLength: PropTypes.number,
 };
 
@@ -59,4 +64,5 @@ Input.defaultProps = {
   onBlur: () => {},
   mask: (value) => value,
   maxLength: 254,
+  type: "text",
 };

@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import { cpfMask, phoneMask } from "../../utils/masks";
 import Row from "../common/Row";
 import Column from "../common/Column";
@@ -10,7 +11,7 @@ export default function CustomerInfoForm({
   state,
   errors,
   onChangeHandle,
-  submitting,
+  submitted,
 }) {
   const [touched, setTouched] = useState({
     name: false,
@@ -20,12 +21,12 @@ export default function CustomerInfoForm({
   });
 
   function onBlurHandle(field) {
-    return () => setTouched((oldState) => ({ ...oldState, [field]: true }));
+    return () => setTouched((prevState) => ({ ...prevState, [field]: true }));
   }
 
   const getError = useCallback(
-    (field) => (touched[field] || submitting ? errors[field] : null),
-    [errors, touched, submitting]
+    (field) => (touched[field] || submitted ? errors[field] : null),
+    [errors, touched, submitted]
   );
 
   return (
@@ -79,3 +80,22 @@ export default function CustomerInfoForm({
     </>
   );
 }
+
+const customerProps = {
+  name: PropTypes.string,
+  cpf: PropTypes.string,
+  email: PropTypes.string,
+  phone: PropTypes.string,
+};
+
+CustomerInfoForm.propTypes = {
+  state: PropTypes.shape(customerProps).isRequired,
+  errors: PropTypes.shape(customerProps).isRequired,
+  onChangeHandle: PropTypes.func,
+  submitted: PropTypes.bool,
+};
+
+CustomerInfoForm.defaultProps = {
+  onChangeHandle: () => {},
+  submitted: false,
+};

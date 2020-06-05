@@ -17,6 +17,7 @@ const performQueriesWithTransaction = async (queries) => {
     await transaction.commit();
     return results;
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
     await transaction.rollback();
     return [];
@@ -54,7 +55,11 @@ module.exports = {
       const { count, rows } = await Customer.findAndCountAll({
         distinct: true,
         include: [Customer.Addresses],
-        order: ['updatedAt', 'createdAt', 'name'],
+        order: [
+          ['updatedAt', 'DESC'],
+          ['createdAt', 'DESC'],
+          ['name', 'ASC'],
+        ],
         limit: pageSize,
         offset,
         where,

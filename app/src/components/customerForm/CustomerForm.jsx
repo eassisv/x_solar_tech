@@ -1,12 +1,14 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import "../../styles/CustomerForm.css";
 import customerSchema from "../../utils/schemas";
 import Button from "../common/Button";
 import CustomerInfoForm from "./CustomerInfoForm";
 import CustomerAddressForm from "./CustomerAddressForm";
 
+const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 const emptyAddress = {
   street: "",
   number: "",
@@ -38,7 +40,12 @@ const getErrors = ({ inner }) =>
     ? inner.reduce((acc, err) => ({ [err.path]: err.errors[0], ...acc }), {})
     : {};
 
-export default function CustomerForm({ customer, submitted, onSubmitHandle }) {
+export default function CustomerForm({
+  customer,
+  submitted,
+  duplicatedErrors,
+  onSubmitHandle,
+}) {
   const [state, setState] = useState(getCustomerInitialState(customer));
   const [errors, setErrors] = useState({});
 
@@ -94,6 +101,13 @@ export default function CustomerForm({ customer, submitted, onSubmitHandle }) {
   }
 
   useEffect(() => {
+    setErrors({
+      cpf: duplicatedErrors.cpf && "Já existe cliente com este CPF", // : "",
+      email: duplicatedErrors.email && "Já existe cliente com este Email", // : "",
+    });
+  }, [duplicatedErrors]);
+
+  useEffect(() => {
     (async () => {
       await validate();
     })();
@@ -146,10 +160,15 @@ CustomerForm.propTypes = {
   }),
   submitted: PropTypes.bool,
   onSubmitHandle: PropTypes.func,
+  duplicatedErrors: PropTypes.shape({
+    cpf: PropTypes.bool,
+    email: PropTypes.bool,
+  }),
 };
 
 CustomerForm.defaultProps = {
   customer: {},
   submitted: false,
   onSubmitHandle: () => {},
+  duplicatedErrors: { cpf: false, email: false },
 };

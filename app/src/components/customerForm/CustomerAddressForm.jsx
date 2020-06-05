@@ -40,7 +40,6 @@ export default function CustomerAddressForm({
     onBlurHandle("cep")();
     const { cep } = state;
     setLoading(true);
-    console.log("buscando CEP");
     try {
       const { data } = await axios.get(viaCepWSUrl(cep.replace(/\D/g, "")));
       onChangeHandle(getFieldName("street"))(data.logradouro || "");

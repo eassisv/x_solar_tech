@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import Row from "../common/Row";
 import Column from "../common/Column";
-import Input from "../common/Input";
+import Button from "../common/Button";
 import Loading from "../common/Loading";
+import Input from "../common/Input";
 import { cepMask } from "../../utils/masks";
 
 const viaCepWSUrl = (cep) => `https://viacep.com.br/ws/${cep}/json/`;
@@ -14,6 +15,8 @@ export default function CustomerAddressForm({
   errors,
   submitted,
   onChangeHandle,
+  canRemoveAddress,
+  onAddressDeleteHandle,
 }) {
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState({
@@ -53,8 +56,21 @@ export default function CustomerAddressForm({
   }
 
   return (
-    <>
+    <div className="form__address-container">
       {loading && <Loading />}
+      {canRemoveAddress && (
+        <div className="form__address-remove-button">
+          <Button
+            variant="danger"
+            small
+            onClick={() =>
+              onAddressDeleteHandle(Number(index.replace(/\D/g, "")))
+            }
+          >
+            Remover
+          </Button>
+        </div>
+      )}
       <Row>
         <Column>
           <Input
@@ -128,7 +144,8 @@ export default function CustomerAddressForm({
           />
         </Column>
       </Row>
-    </>
+      <hr />
+    </div>
   );
 }
 
@@ -149,9 +166,11 @@ CustomerAddressForm.propTypes = {
   errors: PropTypes.shape(addressProps).isRequired,
   submitted: PropTypes.bool,
   onChangeHandle: PropTypes.func,
+  canRemoveAddress: PropTypes.bool,
 };
 
 CustomerAddressForm.defaultProps = {
   submitted: false,
   onChangeHandle: () => {},
+  canRemoveAddress: false,
 };

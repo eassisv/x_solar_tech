@@ -27,11 +27,12 @@
 .form-label {
   color: #333333;
   font-size: 0.9rem;
+  font-style: italic;
 }
 
 .form-error {
   color: #f13939;
-  font-size: 0.67rem;
-  line-height: 0.67rem;
+  font-size: 0.6rem;
+  line-height: 0.6rem;
   font-style: italic;
 }

@@ -6,6 +6,11 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.form__container h3 {
+  color: #3a3a3a;
+  margin: 0.7rem 0 1rem;
+}
+
 .form__buttons-wrapper {
   position: relative;
   display: flex;
@@ -14,5 +19,27 @@
 }
 
 .form__buttons-wrapper button:last-child {
+  margin-right: 0;
+}
+
+.form__customer-info-container {
+  padding: 0 0 0.7rem;
+}
+
+.form__customer-info-container hr {
+  margin-top: 1rem;
+}
+
+.form__address-container hr {
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
+.form__address-remove-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form__address-remove-button button {
   margin-right: 0;
 }

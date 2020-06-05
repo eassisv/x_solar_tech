@@ -1,14 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
 import "../../styles/CustomerForm.css";
 import customerSchema from "../../utils/schemas";
 import Button from "../common/Button";
 import CustomerInfoForm from "./CustomerInfoForm";
 import CustomerAddressForm from "./CustomerAddressForm";
 
-const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 const emptyAddress = {
   street: "",
   number: "",
@@ -117,21 +115,31 @@ export default function CustomerForm({
     setState(getCustomerInitialState(customer));
   }, [customer]);
 
+  function onAddressDeleteHandle(addressIndex) {
+    const addresses = state.addresses.filter(
+      (_, index) => index !== addressIndex
+    );
+    setState((prevState) => ({ ...prevState, addresses }));
+  }
+
   return (
     <form className="form__container" onSubmit={beforeSubmit}>
+      <h3>Dados Pessoais</h3>
       <CustomerInfoForm
         state={state}
         errors={errors}
         onChangeHandle={onChangeHandle}
         submitted={submitted}
       />
-      <hr />
+      <h3>{state.addresses.length > 1 ? "Endereços" : "Endereço"}</h3>
       {state.addresses.map((address, index) => (
         <CustomerAddressForm
           key={index}
           state={address}
           errors={errors}
           submitted={submitted}
+          canRemoveAddress={state.addresses.length > 1}
+          onAddressDeleteHandle={onAddressDeleteHandle}
           onChangeHandle={onChangeHandle}
           index={`addresses[${index}]`}
         />

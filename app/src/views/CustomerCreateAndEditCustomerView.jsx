@@ -3,6 +3,7 @@ import { Link, useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/common/Loading";
 import Container from "../components/common/Container";
+import ErrorMessage from "../components/common/ErrorMessage";
 import CustomerForm from "../components/customerForm/CustomerForm";
 import "../styles/CustomerCreateAndEditPage.css";
 
@@ -15,6 +16,7 @@ export default function CustomerCreateAndEditView() {
   const [loading, setLoading] = useState(true);
   const [customer, setCustomer] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [unexpectedError, setUnexpectedError] = useState(false);
   const [duplicatedErrors, setDuplicatedErrors] = useState({});
 
   useEffect(() => {
@@ -25,11 +27,16 @@ export default function CustomerCreateAndEditView() {
           const { data } = await instance.get(`/customers/${id}`);
           setCustomer(data);
         } catch (err) {
-          console.log(err.response);
+          const { response } = err;
+          if (response && response.status === 404) {
+            history.replace("/http404/");
+            return;
+          }
+          setUnexpectedError(true);
         }
       setLoading(false);
     })();
-  }, [id]);
+  }, [id, history]);
 
   function onSubmitHandle(validate) {
     setLoading(true);
@@ -46,10 +53,14 @@ export default function CustomerCreateAndEditView() {
           const finalState = { ...state, cpf, phone, addresses };
           if (id === "new") await instance.post("/customers/", finalState);
           else await instance.put(`/customers/${id}/`, finalState);
-          history.push("/customers/");
+          history.replace("/customers/");
         } catch (err) {
           const { response } = err;
           if (response) {
+            if (response.status === 404) {
+              history.replace("/http404/");
+              return;
+            }
             const { data } = response;
             if (data.errors) {
               const { errors } = data;
@@ -67,15 +78,13 @@ export default function CustomerCreateAndEditView() {
                 return;
               }
             }
-            if (response.status === 404) {
-              history.push("/http404/");
-              return;
-            }
           }
-          history.push("/error/");
+          setLoading(false);
+          setUnexpectedError(true);
         }
       })
       .catch(() => {
+        window.scrollTo(0, 0);
         setLoading(false);
         setSubmitted(true);
       });
@@ -87,12 +96,16 @@ export default function CustomerCreateAndEditView() {
         Voltar
       </Link>
       {loading && <Loading />}
-      <CustomerForm
-        duplicatedErrors={duplicatedErrors}
-        customer={customer}
-        submitted={submitted}
-        onSubmitHandle={onSubmitHandle}
-      />
+      {unexpectedError ? (
+        <ErrorMessage />
+      ) : (
+        <CustomerForm
+          duplicatedErrors={duplicatedErrors}
+          customer={customer}
+          submitted={submitted}
+          onSubmitHandle={onSubmitHandle}
+        />
+      )}
     </Container>
   );
 }

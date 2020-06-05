@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import CPF from "cpf-check";
-import { phoneValidate, numberValidate } from "./validators";
+import { phoneValidate, numberValidate, cepValidate } from "./validators";
 
 yup.setLocale({
   mixed: {
@@ -18,7 +18,7 @@ const address = yup.object().shape({
   neighborhood: yup.string().required(),
   city: yup.string().required(),
   state: yup.string().required(),
-  cep: yup.string().required(),
+  cep: yup.string().test("invalid-cep", "CEP inválido", cepValidate).required(),
   others: yup.string(),
 });
 

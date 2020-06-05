@@ -7,6 +7,7 @@ import Button from "../common/Button";
 import Loading from "../common/Loading";
 import Input from "../common/Input";
 import { cepMask } from "../../utils/masks";
+import { cepValidate } from "../../utils/validators";
 
 const viaCepWSUrl = (cep) => `https://viacep.com.br/ws/${cep}/json/`;
 export default function CustomerAddressForm({
@@ -42,17 +43,19 @@ export default function CustomerAddressForm({
   async function findAddressWithCep() {
     onBlurHandle("cep")();
     const { cep } = state;
-    setLoading(true);
-    try {
-      const { data } = await axios.get(viaCepWSUrl(cep.replace(/\D/g, "")));
-      onChangeHandle(getFieldName("street"))(data.logradouro || "");
-      onChangeHandle(getFieldName("neighborhood"))(data.bairro || "");
-      onChangeHandle(getFieldName("city"))(data.localidade || "");
-      onChangeHandle(getFieldName("state"))(data.uf || "");
-    } catch (err) {
-      console.error(err);
+    if (cepValidate(cep)) {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(viaCepWSUrl(cep.replace(/\D/g, "")));
+        onChangeHandle(getFieldName("street"))(data.logradouro || "");
+        onChangeHandle(getFieldName("neighborhood"))(data.bairro || "");
+        onChangeHandle(getFieldName("city"))(data.localidade || "");
+        onChangeHandle(getFieldName("state"))(data.uf || "");
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   return (

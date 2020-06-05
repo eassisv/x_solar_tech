@@ -1,0 +1,14 @@
+.http404__message-wrapper {
+  text-align: center;
+  padding: 2.5rem 0;
+}
+
+.http404__message-wrapper h1,
+.http404__message-wrapper h3 {
+  color: #222;
+  margin: 0;
+}
+
+.http404__message-wrapper h1 {
+  font-size: 7rem;
+}

@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import CustomerListView from "./views/CustomerListView";
 import CustomerCreateAndEditCustomerView from "./views/CustomerCreateAndEditCustomerView";
+import Http404Page from "./views/Http404Page";
 
 export default function App() {
   return (
@@ -18,6 +19,9 @@ export default function App() {
         </Route>
         <Route exact path="/customers/:id">
           <CustomerCreateAndEditCustomerView />
+        </Route>
+        <Route path="/http404">
+          <Http404Page />
         </Route>
       </Switch>
     </Router>

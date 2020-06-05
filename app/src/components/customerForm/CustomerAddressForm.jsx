@@ -58,19 +58,6 @@ export default function CustomerAddressForm({
   return (
     <div className="form__address-container">
       {loading && <Loading />}
-      {canRemoveAddress && (
-        <div className="form__address-remove-button">
-          <Button
-            variant="danger"
-            small
-            onClick={() =>
-              onAddressDeleteHandle(Number(index.replace(/\D/g, "")))
-            }
-          >
-            Remover
-          </Button>
-        </div>
-      )}
       <Row>
         <Column>
           <Input
@@ -144,7 +131,19 @@ export default function CustomerAddressForm({
           />
         </Column>
       </Row>
-      <hr />
+      {canRemoveAddress && (
+        // <div className="form__address-remove-button">
+        // </div>
+        <Button
+          small
+          variant="danger"
+          onClick={() =>
+            onAddressDeleteHandle(Number(index.replace(/\D/g, "")))
+          }
+        >
+          Remover
+        </Button>
+      )}
     </div>
   );
 }
@@ -167,10 +166,12 @@ CustomerAddressForm.propTypes = {
   submitted: PropTypes.bool,
   onChangeHandle: PropTypes.func,
   canRemoveAddress: PropTypes.bool,
+  onAddressDeleteHandle: PropTypes.func,
 };
 
 CustomerAddressForm.defaultProps = {
   submitted: false,
   onChangeHandle: () => {},
   canRemoveAddress: false,
+  onAddressDeleteHandle: () => {},
 };

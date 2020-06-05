@@ -4,7 +4,6 @@ import { cpfMask, phoneMask } from "../../utils/masks";
 import Row from "../common/Row";
 import Column from "../common/Column";
 import Input from "../common/Input";
-import "../../styles/CustomerForm.css";
 
 // const filteredValue = (value) => value.replace(/[^A-Za-z0-9]/g, "");
 
@@ -78,7 +77,6 @@ export default function CustomerInfoForm({
           />
         </Column>
       </Row>
-      <hr />
     </div>
   );
 }

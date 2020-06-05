@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import "../../styles/CustomerForm.css";
 import customerSchema from "../../utils/schemas";
 import Button from "../common/Button";
 import CustomerInfoForm from "./CustomerInfoForm";

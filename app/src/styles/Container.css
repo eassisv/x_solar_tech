@@ -5,13 +5,11 @@
   margin-right: auto;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  box-sizing: border-box;
 }
 
 @media all and (max-width: 768px) {
   .container {
-    position: relative;
-    box-sizing: border-box;
     width: 95%;
-    margin: 0 auto;
   }
 }

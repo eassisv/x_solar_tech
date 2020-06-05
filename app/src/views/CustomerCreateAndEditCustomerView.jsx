@@ -4,6 +4,7 @@ import axios from "axios";
 import Loading from "../components/common/Loading";
 import Container from "../components/common/Container";
 import CustomerForm from "../components/customerForm/CustomerForm";
+import "../styles/CustomerCreateAndEditPage.css";
 
 const instance = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 const cleanMask = (value) => value.replace(/\D/g, "");
@@ -82,7 +83,9 @@ export default function CustomerCreateAndEditView() {
 
   return (
     <Container>
-      <Link to="/customers/">Voltar</Link>
+      <Link className="form__go-back-link" to="/customers/">
+        Voltar
+      </Link>
       {loading && <Loading />}
       <CustomerForm
         duplicatedErrors={duplicatedErrors}

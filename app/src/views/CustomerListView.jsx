@@ -61,7 +61,9 @@ export default function CustomerListView() {
         customerList={customerList}
         onDeleteCard={onDeleteCardHandle}
       />
-      <CustomerListPagination currentPage={currentPage} lastPage={lastPage} />
+      {lastPage > 1 && (
+        <CustomerListPagination currentPage={currentPage} lastPage={lastPage} />
+      )}
     </Container>
   );
 }

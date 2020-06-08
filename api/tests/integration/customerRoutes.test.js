@@ -14,16 +14,17 @@ describe('Customer routes and methods', () => {
   test('get method returns all registered customers', async () => {
     const customers = await customerFactory.create(2);
     const res = await request(app).get('/customers/');
-    expect(res.body).toEqual(
+    expect(res.body.customers).toEqual(
       expect.arrayContaining(
         customers.map((customer) => ({
           ...customer.get(),
+          addresses: [],
           createdAt: customer.get('createdAt').toJSON(),
           updatedAt: customer.get('updatedAt').toJSON(),
         })),
       ),
     );
-    expect(res.body.length).toBe(customers.length);
+
     expect(res.status).toBe(200);
   });
 

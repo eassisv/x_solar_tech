@@ -10,17 +10,18 @@ module.exports = (schema) => async (req, res, next) => {
     req.data = data;
     return next();
   } catch (err) {
-    const errors = err.inner
-      ? err.inner.reduce(
-          (acc, error) => ({
-            ...acc,
-            [error.path]: acc[error.path]
-              ? [...acc[error.path], getErrorObj(error)]
-              : [getErrorObj(error)],
-          }),
-          {},
-        )
-      : err;
-    return res.status(400).json({ errors });
+    if (err.inner) {
+      const errors = err.inner.reduce(
+        (acc, error) => ({
+          ...acc,
+          [error.path]: acc[error.path]
+            ? [...acc[error.path], getErrorObj(error)]
+            : [getErrorObj(error)],
+        }),
+        {},
+      );
+      return res.status(400).json({ errors });
+    }
+    return next(err);
   }
 };
